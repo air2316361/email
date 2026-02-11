@@ -1,0 +1,18 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "email",
+	"main": "src/index.js",
+	"compatibility_date": "2026-02-10",
+	"observability": {
+		"enabled": true
+	},
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"kv_namespaces": [
+		{
+			"binding": "KV",
+			"id": "d9e1c02eedd64d298243efdf4638d624"
+		}
+	]
+}
