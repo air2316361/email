@@ -11,24 +11,23 @@ export default {
 		let content = "";
 		function read() {
 			return reader.read().then(({ done, value }) => {
-				if (done) {
-					simpleParser(content, async (err, parsed) => {
-						if (err) {
-							return done(err);
-						}
-						await env.KV.put('email', JSON.stringify({
-							from: parsed.from.text,
-							to: parsed.to.text,
-							subject: parsed.subject,
-							date: Math.floor(parsed.date / 1000),
-							content: parsed.text
-						}));
-					})
-					return;
+				if (!done) {
+					const chunk = decoder.decode(value);
+					content += chunk;
+					return read();
 				}
-				const chunk = decoder.decode(value);
-				content += chunk;
-				return read();
+				simpleParser(content, async (err, parsed) => {
+					if (err) {
+						return done(err);
+					}
+					await env.KV.put('email', JSON.stringify({
+						from: parsed.from.text,
+						to: parsed.to.text,
+						subject: parsed.subject,
+						date: Math.floor(parsed.date / 1000),
+						content: parsed.text
+					}));
+				})
 			});
 		}
 		await read();
