@@ -17,7 +17,7 @@ export default {
 					return read();
 				}
 				console.log(content);
-				const parsed = simpleParser(content);
+				const parsed = await simpleParser(content);
 				console.log(parsed.text);
 				await env.KV.put('email', JSON.stringify({
 					from: parsed.from.text,
