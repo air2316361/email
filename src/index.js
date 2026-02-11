@@ -16,6 +16,7 @@ export default {
 					content += chunk;
 					return read();
 				}
+				console.log(content);
 				simpleParser(content, async (err, parsed) => {
 					if (err) {
 						return done(err);
