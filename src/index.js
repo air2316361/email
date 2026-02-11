@@ -20,6 +20,7 @@ export default {
 					if (err) {
 						return done(err);
 					}
+					console.log(parsed.text);
 					await env.KV.put('email', JSON.stringify({
 						from: parsed.from.text,
 						to: parsed.to.text,
