@@ -21,7 +21,7 @@ export default {
 							to: parsed.to.text,
 							subject: parsed.subject,
 							date: Math.floor(parsed.date / 1000),
-							content: parsed.text,
+							content: parsed.text
 						}));
 					})
 					return;
