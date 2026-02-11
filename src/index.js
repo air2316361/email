@@ -17,11 +17,18 @@ export default {
 					return read();
 				}
 				const parsed = await simpleParser(content);
+				const date = parsed.date
+				const year = date.getFullYear();
+				const month = String(date.getMonth() + 1).padStart(2, '0');
+				const day = String(date.getDate()).padStart(2, '0');
+				const hours = String(date.getHours()).padStart(2, '0');
+				const minutes = String(date.getMinutes()).padStart(2, '0');
+				const seconds = String(date.getSeconds()).padStart(2, '0');
 				await env.KV.put('email', JSON.stringify({
 					from: parsed.from.text,
 					to: parsed.to.text,
 					subject: parsed.subject,
-					date: Math.floor(parsed.date / 1000),
+					date: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
 					content: parsed.text
 				}));
 			});
