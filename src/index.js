@@ -17,13 +17,14 @@ export default {
 					return read();
 				}
 				const parsed = await simpleParser(content);
-				const date = parsed.date
-				const year = date.getFullYear();
-				const month = String(date.getMonth() + 1).padStart(2, '0');
-				const day = String(date.getDate()).padStart(2, '0');
-				const hours = String(date.getHours()).padStart(2, '0');
-				const minutes = String(date.getMinutes()).padStart(2, '0');
-				const seconds = String(date.getSeconds()).padStart(2, '0');
+				const utcTime = parsed.date.getTime() + (parsed.date.getTimezoneOffset() * 60000);
+				const gmt8Time = new Date(utcTime + (3600000 * 8));
+				const year = gmt8Time.getFullYear();
+				const month = String(gmt8Time.getMonth() + 1).padStart(2, '0');
+				const day = String(gmt8Time.getDate()).padStart(2, '0');
+				const hours = String(gmt8Time.getHours()).padStart(2, '0');
+				const minutes = String(gmt8Time.getMinutes()).padStart(2, '0');
+				const seconds = String(gmt8Time.getSeconds()).padStart(2, '0');
 				await env.KV.put('email', JSON.stringify({
 					from: parsed.from.text,
 					to: parsed.to.text,
