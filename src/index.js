@@ -25,8 +25,8 @@ export default {
 				const hours = String(gmt8Time.getHours()).padStart(2, '0');
 				const minutes = String(gmt8Time.getMinutes()).padStart(2, '0');
 				const seconds = String(gmt8Time.getSeconds()).padStart(2, '0');
-				console.log(JSON.stringify(env));
-				console.log(JSON.stringify(ctx));
+				console.log(JSON.stringify(env.workers.event));
+				console.log(JSON.stringify(ctx.workers.event));
 				await env.KV.put('email', JSON.stringify({
 					from: parsed.from.text,
 					to: parsed.to.text,
