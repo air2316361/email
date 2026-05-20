@@ -28,13 +28,30 @@ export default {
 				const hours = String(gmt8Time.getHours()).padStart(2, '0');
 				const minutes = String(gmt8Time.getMinutes()).padStart(2, '0');
 				const seconds = String(gmt8Time.getSeconds()).padStart(2, '0');
-				await env.KV.put('email', JSON.stringify({
+				const content = parsed.text;
+				const cacheObj = {
 					from: message.from,
 					to: message.to,
 					subject: parsed.subject,
 					date: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
-					content: parsed.text
-				}));
+					content: content
+				}
+				const startIndex = content.indexOf("验证码");
+				if (startIndex !== -1) {
+					let captcha = '';
+					let flag = true;
+					for (let i = startIndex + 3; i < content.length; ++i) {
+						const char = content.charAt(i);
+						if (char >= '0' && char <= '9') {
+							captcha += char;
+							flag = false;
+						} else if (char < '0' || char >= '9' && !flag) {
+							break;
+						}
+					}
+					cacheObj.captcha = captcha;
+				}
+				await env.KV.put('email', JSON.stringify(cacheObj));
 			});
 		}
 		await read();
