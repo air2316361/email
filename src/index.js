@@ -3,6 +3,8 @@ const { simpleParser } = require('mailparser');
 
 export default {
 	async fetch(request, env, ctx) {
+		console.log(request);
+		console.log(JSON.stringify(request));
 		const value = await env.KV.get('email');
 		return new Response(value);
 	},
