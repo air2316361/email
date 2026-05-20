@@ -25,11 +25,9 @@ export default {
 				const hours = String(gmt8Time.getHours()).padStart(2, '0');
 				const minutes = String(gmt8Time.getMinutes()).padStart(2, '0');
 				const seconds = String(gmt8Time.getSeconds()).padStart(2, '0');
-				console.log(message.from);
-				console.log(message.to);
 				await env.KV.put('email', JSON.stringify({
-					from: parsed.from.text,
-					to: parsed.to.text,
+					from: message.from,
+					to: message.to,
 					subject: parsed.subject,
 					date: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
 					content: parsed.text
