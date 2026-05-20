@@ -41,7 +41,7 @@ export default {
 					let captcha = '';
 					let flag = true;
 					for (let i = startIndex + 3; i < parsedContent.length; ++i) {
-						const char = parsedContent.charAt(i);
+						const char = parsedContent[i];
 						if (char >= '0' && char <= '9') {
 							captcha += char;
 							flag = false;
