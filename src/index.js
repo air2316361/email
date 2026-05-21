@@ -37,36 +37,13 @@ export default {
 					content: parsedContent
 				}
 				let startIndex = parsedContent.indexOf("验证码");
-				let endIndex = 0;
-				if (startIndex !== -1) {
-					let flag = true;
-					for (let i = startIndex + 3; i < parsedContent.length; ++i) {
-						const char = parsedContent[i];
-						if (char >= '0' && char <= '9') {
-							startIndex = i;
-							flag = false;
-						} else if (char < '0' || char > '9' && !flag) {
-							endIndex = i;
-							break;
-						}
-					}
-					cacheObj.captcha = parsedContent.substring(startIndex, endIndex);
+				if (startIndex > -1) {
+					cacheObj.captcha = parseCaptcha(parsedContent, startIndex + 3);
 				} else {
 					const parsedContentLowerCase = parsedContent.toLowerCase();
 					startIndex = parsedContentLowerCase.indexOf("captcha");
-					if (startIndex !== -1) {
-						let captcha = '';
-						let flag = true;
-						for (let i = startIndex + 7; i < parsedContentLowerCase.length; ++i) {
-							const char = parsedContentLowerCase.charAt(i);
-							if (char >= '0' && char <= '9') {
-								captcha += char;
-								flag = false;
-							} else if (char < '0' || char >= '9' && !flag) {
-								break;
-							}
-						}
-						cacheObj.captcha = captcha;
+					if (startIndex > -1) {
+						cacheObj.captcha = parseCaptcha(parsedContent, startIndex + 7);
 					}
 				}
 				await env.KV.put('email', JSON.stringify(cacheObj));
@@ -75,3 +52,25 @@ export default {
 		await read();
 	}
 };
+
+function isDigit(char) {
+	return !isNaN(Number(char)) && char.trim().length > 0;
+}
+
+function parseCaptcha(content, startIndex) {
+	let endIndex = 0;
+	let flag = true;
+	for (let i = startIndex; i < content.length; ++i) {
+		const char = content[i];
+		if (isDigit(char)) {
+			if (flag) {
+				startIndex = i;
+				flag = false;
+			}
+		} else if (!flag) {
+			endIndex = i;
+			break;
+		}
+	}
+	return content.substring(startIndex, endIndex);
+}
