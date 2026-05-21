@@ -29,7 +29,6 @@ export default {
 				const minutes = String(gmt8Time.getMinutes()).padStart(2, '0');
 				const seconds = String(gmt8Time.getSeconds()).padStart(2, '0');
 				const parsedContent = parsed.text;
-				console.log("Received: ", parsedContent);
 				const cacheObj = {
 					from: message.from,
 					to: message.to,
@@ -38,26 +37,20 @@ export default {
 					content: parsedContent
 				}
 				let startIndex = parsedContent.indexOf("验证码");
+				let endIndex = 0;
 				if (startIndex !== -1) {
-					let captcha = '';
 					let flag = true;
 					for (let i = startIndex + 3; i < parsedContent.length; ++i) {
 						const char = parsedContent[i];
-						console.log("char", char);
-						console.log("1111111111111111111111111111111111")
 						if (char >= '0' && char <= '9') {
-							console.log("flag", flag);
-							console.log("char >= '0' && char <= '9'")
-							captcha += char;
+							startIndex = i;
 							flag = false;
 						} else if (char < '0' || char > '9' && !flag) {
-							console.log("flag", flag);
-							console.log("char < '0' || char > '9' && !flag")
+							endIndex = i;
 							break;
 						}
-						console.log(captcha)
 					}
-					cacheObj.captcha = captcha;
+					cacheObj.captcha = parsedContent.substring(startIndex, endIndex);
 				} else {
 					const parsedContentLowerCase = parsedContent.toLowerCase();
 					startIndex = parsedContentLowerCase.indexOf("captcha");
