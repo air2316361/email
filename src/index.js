@@ -29,6 +29,7 @@ export default {
 				const minutes = String(gmt8Time.getMinutes()).padStart(2, '0');
 				const seconds = String(gmt8Time.getSeconds()).padStart(2, '0');
 				const parsedContent = parsed.text;
+				console.log("Received: ", parsedContent);
 				const cacheObj = {
 					from: message.from,
 					to: message.to,
