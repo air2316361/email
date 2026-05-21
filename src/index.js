@@ -37,11 +37,14 @@ export default {
 					content: parsedContent
 				}
 				let startIndex = parsedContent.indexOf("验证码");
+				console.log("startIndex", startIndex);
 				if (startIndex !== -1) {
+					console.log("startIndex !== -1");
 					let captcha = '';
 					let flag = true;
 					for (let i = startIndex + 3; i < parsedContent.length; ++i) {
 						const char = parsedContent[i];
+						console.log("char", char);
 						if (char >= '0' && char <= '9') {
 							captcha += char;
 							flag = false;
