@@ -43,6 +43,7 @@ export default {
 					for (let i = startIndex + 3; i < parsedContent.length; ++i) {
 						const char = parsedContent[i];
 						console.log("char", char);
+						console.log("flag", flag);
 						if (char >= '0' && char <= '9') {
 							console.log("char >= '0' && char <= '9'")
 							captcha += char;
